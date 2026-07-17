@@ -14,7 +14,7 @@
   --line: rgba(233, 230, 223, 0.14);
   --glass: rgba(10, 12, 26, 0.42);
   --f-display: "Unbounded", sans-serif;
-  --f-serif: "Cormorant Garamond", serif;
+  --f-accent: "Inter", sans-serif;
   --f-body: "Space Grotesk", sans-serif;
   --f-mono: "Space Mono", monospace;
 }
@@ -40,8 +40,12 @@ body {
 ::-webkit-scrollbar-thumb { background: rgba(143, 244, 255, 0.35); }
 
 .mono { font-family: var(--f-mono); }
-.serif { font-family: var(--f-serif); }
-.serif em { font-style: italic; font-weight: 400; }
+.accent {
+  font-family: var(--f-accent);
+  font-weight: 300;
+  letter-spacing: 0.015em;
+}
+.accent em { font-style: italic; font-weight: 300; }
 
 a { color: inherit; text-decoration: none; }
 
@@ -386,7 +390,7 @@ section { position: relative; padding: 0 clamp(24px, 7vw, 120px); }
 .ht-char { display: inline-block; will-change: transform; }
 .hero-tag {
   margin-top: 2.6vh;
-  font-size: clamp(18px, 2.2vw, 30px);
+  font-size: clamp(15px, 1.7vw, 24px);
   color: rgba(233, 230, 223, 0.82);
 }
 .hero-tag em { color: var(--cyan); }
@@ -461,12 +465,12 @@ section { position: relative; padding: 0 clamp(24px, 7vw, 120px); }
   font-size: clamp(24px, 4vw, 60px);
   color: var(--ink);
 }
-.mani-line .fill.serif {
-  font-family: var(--f-serif);
+.mani-line .fill.accent {
+  font-family: var(--f-accent);
   font-weight: 300;
-  font-size: clamp(26px, 4.4vw, 66px);
+  font-size: clamp(24px, 3.8vw, 58px);
 }
-.mani-line .fill.serif em { color: var(--cyan); }
+.mani-line .fill.accent em { color: var(--cyan); }
 .mani-line--offset { text-align: right; }
 .mani-para {
   margin-top: 6vh;
@@ -475,7 +479,7 @@ section { position: relative; padding: 0 clamp(24px, 7vw, 120px); }
   line-height: 2.1;
   color: rgba(233, 230, 223, 0.72);
 }
-.mani-para .serif { display: block; margin-top: 1.6vh; color: var(--ink-dim); }
+.mani-para .accent { display: block; margin-top: 1.6vh; color: var(--ink-dim); }
 .mani-sig {
   margin-top: 4vh;
   font-size: 9px;
@@ -666,7 +670,7 @@ section { position: relative; padding: 0 clamp(24px, 7vw, 120px); }
 .cta-line .char-inner { display: inline-block; will-change: transform; }
 .cta-sub {
   margin-top: 3.4vh;
-  font-size: clamp(17px, 1.9vw, 26px);
+  font-size: clamp(15px, 1.6vw, 23px);
   color: rgba(233, 230, 223, 0.75);
 }
 .cta-btn {
