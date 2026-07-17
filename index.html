@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AETHER — 星际远航局 · Interstellar Voyage Division</title>
+  <meta name="description" content="AETHER 深空远航局 — 为愿意把地平线让渡给星辰的人，建造穿越深空的船。" />
+  <meta name="theme-color" content="#030308" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cpath d='M16 5 L28 27 L4 27 Z' fill='none' stroke='%238ff4ff' stroke-width='2'/%3E%3C/svg%3E" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@200;300;500;700;900&family=Cormorant+Garamond:ital,wght@1,300;1,400;1,500&family=Space+Grotesk:wght@300;400;500&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="styles.css" />
+
+  <script type="importmap">
+  {
+    "imports": {
+      "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+      "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+    }
+  }
+  </script>
+</head>
+<body>
+
+  <!-- ══════════ LOADER ══════════ -->
+  <div id="loader" aria-hidden="true">
+    <div class="loader-frame">
+      <div class="loader-brand">
+        <span class="loader-mark">▲</span> AETHER
+      </div>
+      <div class="loader-center">
+        <div class="loader-count"><span id="loader-num">000</span></div>
+        <div class="loader-bar"><span id="loader-fill"></span></div>
+        <div class="loader-status mono" id="loader-status">CALIBRATING NAVIGATION ARRAY…</div>
+      </div>
+      <div class="loader-foot mono">
+        <span>DEEP SPACE DIVISION</span>
+        <span>EST. 2087</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════ WEBGL CANVAS ══════════ -->
+  <canvas id="scene"></canvas>
+
+  <!-- planet target-lock reticle (positioned by JS projection) -->
+  <div id="reticle" aria-hidden="true">
+    <svg viewBox="0 0 100 100">
+      <circle class="ret-ring" cx="50" cy="50" r="45" />
+      <circle class="ret-dot" cx="50" cy="50" r="1.4" />
+      <path class="ret-ticks" d="M50 0 v7 M50 93 v7 M0 50 h7 M93 50 h7" />
+    </svg>
+    <div class="ret-label mono" id="ret-label">KEPLER-186F · DIST 0.00 AU</div>
+  </div>
+
+  <!-- film grain -->
+  <div class="grain" aria-hidden="true"></div>
+
+  <!-- custom cursor -->
+  <div id="cursor-dot" aria-hidden="true"></div>
+  <div id="cursor-ring" aria-hidden="true"><span></span></div>
+
+  <!-- ══════════ HUD ══════════ -->
+  <header class="hud" aria-hidden="true">
+    <div class="hud-top">
+      <div class="hud-brand mono">▲ AETHER<span class="dim">/ DIVISION</span></div>
+      <nav class="hud-nav mono">
+        <a href="#manifesto" data-hover>宣言</a>
+        <a href="#destinations" data-hover>航线</a>
+        <a href="#telemetry" data-hover>遥测</a>
+        <a href="#departure" data-hover>启程</a>
+      </nav>
+      <div class="hud-meta mono">EST. 2087 — SOL LOCAL</div>
+    </div>
+
+    <div class="hud-bottom">
+      <div class="hud-coords mono" id="hud-coords">RA 000.00° / DEC +00.00° / Z 0.00</div>
+      <div class="hud-section mono"><span id="hud-section-label">01 — ORIGIN 原点</span></div>
+    </div>
+
+    <div class="hud-progress" aria-hidden="true">
+      <span class="hud-progress-track"><span id="hud-progress-fill"></span></span>
+    </div>
+  </header>
+
+  <!-- ══════════ CONTENT ══════════ -->
+  <main id="content">
+
+    <!-- 01 · HERO -->
+    <section class="s-hero" id="origin">
+      <div class="hero-inner">
+        <p class="hero-kicker mono" data-hero-fade>INTERSTELLAR VOYAGE DIVISION · 星际远航局</p>
+        <h1 class="hero-title" data-text="AETHER" aria-label="AETHER">
+          <span class="ht-char">A</span><span class="ht-char">E</span><span class="ht-char">T</span><span class="ht-char">H</span><span class="ht-char">E</span><span class="ht-char">R</span>
+        </h1>
+        <p class="hero-tag serif" data-hero-fade><em>voyage beyond the static</em> — 穿越噪声，抵达寂静</p>
+        <div class="hero-meta mono" data-hero-fade>
+          <span>FLEET READY · 47 VESSELS</span>
+          <span class="dot-sep"></span>
+          <span>CLEARANCE OPEN</span>
+        </div>
+      </div>
+      <div class="scroll-cue mono" data-hero-fade>
+        <span>SCROLL TO DESCEND · 下潜</span>
+        <span class="scroll-line"><i></i></span>
+      </div>
+    </section>
+
+    <!-- 02 · MANIFESTO -->
+    <section class="s-manifesto" id="manifesto">
+      <p class="kicker mono" data-fade>01 / 宣言 — MANIFESTO</p>
+      <h2 class="mani-line" data-scrub-line>
+        <span class="ghost" aria-hidden="true">THE VOID IS NOT EMPTY.</span>
+        <span class="fill">虚空并不空旷。</span>
+      </h2>
+      <h2 class="mani-line mani-line--offset" data-scrub-line>
+        <span class="ghost" aria-hidden="true">IT IS FULL OF PERMISSION.</span>
+        <span class="fill serif"><em>它充满了许可。</em></span>
+      </h2>
+      <p class="mani-para" data-fade>
+        自第一次点火以来，我们便知道：沉默不是尽头，而是邀请。
+        AETHER 为那些愿意把地平线让渡给星辰的人，建造穿越深空的船。
+        <span class="serif"><em>We build vessels for those willing to trade horizons for stars.</em></span>
+      </p>
+      <div class="mani-sig mono" data-fade>— FLIGHT DIRECTOR'S OFFICE, 2087</div>
+    </section>
+
+    <!-- marquee band -->
+    <div class="marquee" aria-hidden="true">
+      <div class="marquee-track">
+        <span>ACROSS THE QUIET · 穿越寂静 · BEYOND THE STATIC · 抵达星辰 · </span><span>ACROSS THE QUIET · 穿越寂静 · BEYOND THE STATIC · 抵达星辰 · </span>
+      </div>
+    </div>
+
+    <!-- 03 · DESTINATIONS -->
+    <section class="s-dest" id="destinations">
+      <p class="kicker mono" data-fade>02 / 目的地 — DESTINATIONS</p>
+      <h2 class="sec-title" data-split>SELECT YOUR TRAJECTORY</h2>
+      <p class="sec-sub" data-fade>三条开放航线。每一条都曾被认为是不可抵达的。</p>
+
+      <div class="cards">
+        <article class="card" data-tilt data-fade>
+          <span class="card-corner tl"></span><span class="card-corner tr"></span>
+          <span class="card-corner bl"></span><span class="card-corner br"></span>
+          <header class="card-head">
+            <span class="card-idx mono">01</span>
+            <span class="card-status mono is-open">● OPEN</span>
+          </header>
+          <h3 class="card-name">TITAN-9</h3>
+          <p class="card-cn serif"><em>泰坦九号 · 甲烷极光下的冰原巡航</em></p>
+          <p class="card-desc">在土卫九的结晶冰原上空低轨滑行，极光是液态甲烷折射出的、永不重复的绿。</p>
+          <dl class="card-data mono">
+            <div><dt>DISTANCE</dt><dd>9.6 AU</dd></div>
+            <div><dt>TRANSIT</dt><dd>41 DAYS</dd></div>
+            <div><dt>GRAVITY</dt><dd>0.14 G</dd></div>
+          </dl>
+        </article>
+
+        <article class="card" data-tilt data-fade>
+          <span class="card-corner tl"></span><span class="card-corner tr"></span>
+          <span class="card-corner bl"></span><span class="card-corner br"></span>
+          <header class="card-head">
+            <span class="card-idx mono">02</span>
+            <span class="card-status mono is-wait">● WAITLIST</span>
+          </header>
+          <h3 class="card-name">KEPLER VEIL</h3>
+          <p class="card-cn serif"><em>开普勒之幕 · 在紫色星云边缘静漂七日</em></p>
+          <p class="card-desc">关闭引擎，让船体随星风漂移。七昼夜之内，你只会听见自己的心跳与宇宙背景辐射。</p>
+          <dl class="card-data mono">
+            <div><dt>DISTANCE</dt><dd>1,204 LY</dd></div>
+            <div><dt>TRANSIT</dt><dd>6 CYCLES</dd></div>
+            <div><dt>GRAVITY</dt><dd>—</dd></div>
+          </dl>
+        </article>
+
+        <article class="card" data-tilt data-fade>
+          <span class="card-corner tl"></span><span class="card-corner tr"></span>
+          <span class="card-corner bl"></span><span class="card-corner br"></span>
+          <header class="card-head">
+            <span class="card-idx mono">03</span>
+            <span class="card-status mono is-rest">● RESTRICTED</span>
+          </header>
+          <h3 class="card-name">HELIOS GATE</h3>
+          <p class="card-cn serif"><em>赫利俄斯之门 · 贴近日冕的禁忌航线</em></p>
+          <p class="card-desc">在日冕物质抛射的间隙穿过。舷窗之外是沸腾的等离子海，舷窗之内是绝对零度的安静。</p>
+          <dl class="card-data mono">
+            <div><dt>DISTANCE</dt><dd>0.04 AU</dd></div>
+            <div><dt>TRANSIT</dt><dd>19 HOURS</dd></div>
+            <div><dt>GRAVITY</dt><dd>27.9 G</dd></div>
+          </dl>
+        </article>
+      </div>
+    </section>
+
+    <!-- 04 · TELEMETRY -->
+    <section class="s-tele" id="telemetry">
+      <p class="kicker mono" data-fade>03 / 遥测 — TELEMETRY</p>
+      <h2 class="sec-title" data-split>THE DIVISION IN NUMBERS</h2>
+      <div class="stats">
+        <div class="stat" data-fade>
+          <span class="stat-num" data-count="47" data-decimals="0">0</span>
+          <span class="stat-label mono">在役舰船 · VESSELS IN SERVICE</span>
+        </div>
+        <div class="stat" data-fade>
+          <span class="stat-num" data-count="12.4" data-decimals="1">0</span>
+          <span class="stat-label mono">光年航程 · REACH IN LIGHT-YEARS</span>
+        </div>
+        <div class="stat" data-fade>
+          <span class="stat-num" data-count="60000" data-decimals="0">0</span>
+          <span class="stat-label mono">已载乘客 · SOULS CARRIED</span>
+        </div>
+        <div class="stat" data-fade>
+          <span class="stat-num" data-count="0" data-decimals="0">0</span>
+          <span class="stat-label mono">事故记录 · INCIDENTS SINCE LAUNCH</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- 05 · DEPARTURE -->
+    <section class="s-cta" id="departure">
+      <p class="kicker mono" data-fade>04 / 启程 — DEPARTURE</p>
+      <h2 class="cta-title">
+        <span class="cta-line" data-split>BEGIN THE</span>
+        <span class="cta-line cta-line--alt" data-split>CROSSING</span>
+      </h2>
+      <p class="cta-sub serif" data-fade><em>地平线之后，是为你预留的座位。</em></p>
+      <a href="#origin" class="cta-btn mono" data-magnetic data-hover data-fade>
+        <span class="cta-btn-text">申请通行许可 · REQUEST CLEARANCE</span>
+        <span class="cta-btn-arrow">→</span>
+      </a>
+      <footer class="footer mono">
+        <span>© 2087 AETHER DIVISION — 深空航线管理局</span>
+        <span class="footer-links">
+          <a href="#origin" data-hover>舰队</a>
+          <a href="#origin" data-hover>档案</a>
+          <a href="#origin" data-hover>通讯</a>
+        </span>
+      </footer>
+    </section>
+
+  </main>
+
+  <!-- GSAP (classic scripts → window.gsap) -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+
+  <script type="module" src="main.js"></script>
+</body>
+</html>
