@@ -362,10 +362,10 @@ section { position: relative; padding: 0 clamp(24px, 7vw, 120px); }
 .hero-title {
   position: relative;
   font-family: var(--f-display);
-  font-weight: 300;
+  font-weight: 500;
   font-size: clamp(64px, 16.5vw, 260px);
   line-height: 1;
-  letter-spacing: 0.045em;
+  letter-spacing: 0.04em;
   margin-left: -0.02em;
 }
 /* gradient lives on each char: background-clip:text breaks when a child
