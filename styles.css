@@ -13,9 +13,9 @@
   --violet: #8b7bff;
   --line: rgba(233, 230, 223, 0.14);
   --glass: rgba(10, 12, 26, 0.42);
-  --f-display: "Unbounded", sans-serif;
-  --f-accent: "Inter", sans-serif;
-  --f-body: "Space Grotesk", sans-serif;
+  --f-display: "Jost", "PingFang SC", "Microsoft YaHei", sans-serif;
+  --f-accent: "Jost", "PingFang SC", "Microsoft YaHei", sans-serif;
+  --f-body: "Jost", "PingFang SC", "Microsoft YaHei", sans-serif;
   --f-mono: "Space Mono", monospace;
 }
 
@@ -122,7 +122,7 @@ main { position: relative; z-index: 2; }
 #reticle {
   position: fixed;
   top: 0; left: 0;
-  z-index: 5;
+  z-index: 1; /* above the canvas, below page content */
   pointer-events: none;
   width: 200px; height: 200px;
   opacity: 0.55;
@@ -326,10 +326,10 @@ section { position: relative; padding: 0 clamp(24px, 7vw, 120px); }
 
 .sec-title {
   font-family: var(--f-display);
-  font-weight: 700;
-  font-size: clamp(30px, 5.2vw, 76px);
-  line-height: 1.04;
-  letter-spacing: -0.01em;
+  font-weight: 500;
+  font-size: clamp(28px, 4.6vw, 68px);
+  line-height: 1.08;
+  letter-spacing: 0.05em;
   text-transform: uppercase;
 }
 .sec-title .char { display: inline-block; overflow: hidden; vertical-align: bottom; }
@@ -362,18 +362,18 @@ section { position: relative; padding: 0 clamp(24px, 7vw, 120px); }
 .hero-title {
   position: relative;
   font-family: var(--f-display);
-  font-weight: 900;
-  font-size: clamp(58px, 15.5vw, 240px);
-  line-height: 0.98;
-  letter-spacing: -0.015em;
-  margin-left: -0.04em;
+  font-weight: 300;
+  font-size: clamp(64px, 16.5vw, 260px);
+  line-height: 1;
+  letter-spacing: 0.045em;
+  margin-left: -0.02em;
 }
 /* gradient lives on each char: background-clip:text breaks when a child
    becomes a composited layer (transform/will-change), so keep it local */
 .ht-char {
   display: inline-block;
   color: transparent;
-  background: linear-gradient(180deg, #ffffff 8%, #cdd6ff 52%, #4c587f 96%);
+  background: linear-gradient(180deg, #ffffff 10%, #e3e8f6 52%, #8d97b8 96%);
   -webkit-background-clip: text;
   background-clip: text;
 }
@@ -449,9 +449,10 @@ section { position: relative; padding: 0 clamp(24px, 7vw, 120px); }
 .mani-line .ghost {
   display: block;
   font-family: var(--f-display);
-  font-weight: 900;
-  font-size: clamp(30px, 6vw, 92px);
-  line-height: 1.02;
+  font-weight: 500;
+  font-size: clamp(28px, 5.4vw, 84px);
+  line-height: 1.05;
+  letter-spacing: 0.04em;
   text-transform: uppercase;
   color: transparent;
   -webkit-text-stroke: 1px rgba(233, 230, 223, 0.30);
@@ -461,8 +462,9 @@ section { position: relative; padding: 0 clamp(24px, 7vw, 120px); }
   display: block;
   margin-top: 0.6vh;
   font-family: var(--f-display);
-  font-weight: 700;
-  font-size: clamp(24px, 4vw, 60px);
+  font-weight: 500;
+  font-size: clamp(24px, 3.8vw, 56px);
+  letter-spacing: 0.03em;
   color: var(--ink);
 }
 .mani-line .fill.accent {
@@ -506,8 +508,8 @@ section { position: relative; padding: 0 clamp(24px, 7vw, 120px); }
 .marquee-track span {
   font-family: var(--f-display);
   font-weight: 300;
-  font-size: clamp(18px, 2.4vw, 34px);
-  letter-spacing: 0.14em;
+  font-size: clamp(16px, 2.1vw, 30px);
+  letter-spacing: 0.22em;
   color: rgba(233, 230, 223, 0.34);
   padding-right: 0.5em;
 }
@@ -573,9 +575,9 @@ section { position: relative; padding: 0 clamp(24px, 7vw, 120px); }
 .card-status.is-rest { color: #ff7d7d; }
 .card-name {
   font-family: var(--f-display);
-  font-weight: 700;
-  font-size: clamp(22px, 2vw, 30px);
-  letter-spacing: 0.02em;
+  font-weight: 500;
+  font-size: clamp(20px, 1.9vw, 28px);
+  letter-spacing: 0.09em;
   transform: translateZ(30px);
 }
 .card-cn {
@@ -655,15 +657,15 @@ section { position: relative; padding: 0 clamp(24px, 7vw, 120px); }
 .cta-title { display: flex; flex-direction: column; }
 .cta-line {
   font-family: var(--f-display);
-  font-weight: 900;
-  font-size: clamp(44px, 9.6vw, 150px);
-  line-height: 1.0;
-  letter-spacing: -0.01em;
+  font-weight: 300;
+  font-size: clamp(44px, 9.8vw, 152px);
+  line-height: 1.02;
+  letter-spacing: 0.04em;
   text-transform: uppercase;
 }
 .cta-line--alt {
   color: transparent;
-  -webkit-text-stroke: 1.5px rgba(143, 244, 255, 0.75);
+  -webkit-text-stroke: 1px rgba(143, 244, 255, 0.75);
   margin-left: 0.08em;
 }
 .cta-line .char { display: inline-block; overflow: hidden; vertical-align: bottom; }

@@ -48,7 +48,7 @@ python3 -m http.server 8797
   （边缘色散、暗角、胶片颗粒）；MSAA ×4 + HalfFloat
 - **动效**：GSAP ScrollTrigger（字符拆分 reveal、scrub 滑移）、
   磁吸按钮、3D 倾斜卡片、计数器、双语跑马灯、自定义光标
-- **排版**：全无衬线体系 — Unbounded / Inter / Space Grotesk / Space Mono
+- **排版**：极简高级感双字体 — Jost（Futura 系几何无衬线，细字重 + 宽字距）/ Space Mono（HUD 数据）；中文回退苹方
 
 ## 调试参数
 
